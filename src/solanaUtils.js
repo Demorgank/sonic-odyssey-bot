@@ -68,8 +68,15 @@ async function getKeypairFromSeed(seedPhrase) {
 }
 
 function getKeypairFromPrivateKey(privateKey) {
-  return Keypair.fromSecretKey(base58.decode(privateKey));
+  try {
+    const decodedKey = base58.decode(privateKey);
+    return Keypair.fromSecretKey(decodedKey);
+  } catch (error) {
+    console.error("Invalid private key. Please check the input format.".red);
+    throw error;
+  }
 }
+
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
